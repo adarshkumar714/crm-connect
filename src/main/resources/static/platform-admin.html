@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRMConnect — Platform Super Admin Master Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --amber: #f59e0b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #090d16;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      height: 70px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 36px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+
+    .brand-badge {
+      background: rgba(79, 70, 229, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #a5b4fc;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4338ca, #4f46e5);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: #cbd5e1;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+    }
+
+    /* MAIN CONTAINER */
+    .main-content {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* HEADER HERO */
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .hero-header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .hero-header p {
+      color: var(--slate-400, #94a3b8);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    /* KPI METRICS GRID */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .kpi-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 22px 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4f46e5, #a855f7);
+    }
+    .kpi-card.emerald::before { background: linear-gradient(90deg, #10b981, #06b6d4); }
+    .kpi-card.amber::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+    .kpi-card.purple::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #94a3b8;
+    }
+    .kpi-val {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 8px 0 4px;
+      color: #ffffff;
+      font-feature-settings: 'tnum';
+    }
+    .kpi-sub {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* CLIENTS TABLE CARD */
+    .table-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .table-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .table-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .table-search {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 14px;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 13px;
+      width: 260px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background: rgba(15, 23, 42, 0.4);
+      padding: 14px 24px;
+      color: #94a3b8;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    td {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: #cbd5e1;
+    }
+
+    tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .company-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .company-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #ffffff;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .subdomain-tag {
+      background: rgba(255,255,255,0.06);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+      color: #93c5fd;
+      font-size: 12px;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-status.active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-status.suspended {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .plan-select {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .action-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #cbd5e1;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .btn-icon:hover {
+      background: rgba(255,255,255,0.12);
+      color: #ffffff;
+    }
+    .btn-icon.danger {
+      color: #fb7185;
+    }
+    .btn-icon.danger:hover {
+      background: rgba(244, 63, 94, 0.2);
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-backdrop.hidden { display: none; }
+
+    .modal-card {
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .modal-header h3 { font-size: 18px; font-weight: 800; }
+    .modal-close {
+      background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #cbd5e1;
+    }
+    .form-control {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .form-control:focus {
+      border-color: #6366f1;
+      outline: none;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e293b;
+      border: 1px solid #4f46e5;
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 200;
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="brand-group">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="brand-title">CRMConnect</span>
+          <span class="brand-badge">Super Admin</span>
+        </div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a href="/crm" class="btn btn-secondary" target="_blank">↗ Open Client CRM</a>
+      <button class="btn btn-primary" onclick="openCreateModal()">+ Onboard Company</button>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW -->
+  <main class="main-content">
+    
+    <!-- HERO HEADER -->
+    <div class="hero-header">
+      <div>
+        <h1>Platform Control Center</h1>
+        <p>Monitor client organizations, manage subscription tiers, and oversee tenant health.</p>
+      </div>
+      <div>
+        <button class="btn btn-secondary" onclick="loadData()">🔄 Refresh Stats</button>
+      </div>
+    </div>
+
+    <!-- METRICS KPI BAR -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Organizations</div>
+        <div id="kpiCompanies" class="kpi-val">0</div>
+        <div class="kpi-sub">Registered tenant workspaces</div>
+      </div>
+      <div class="kpi-card emerald">
+        <div class="kpi-label">Active Workspaces</div>
+        <div id="kpiActive" class="kpi-val">0</div>
+        <div class="kpi-sub">Serving customer enquiries</div>
+      </div>
+      <div class="kpi-card purple">
+        <div class="kpi-label">Total Platform Users</div>
+        <div id="kpiUsers" class="kpi-val">0</div>
+        <div class="kpi-sub">Admins, Managers &amp; Sales Reps</div>
+      </div>
+      <div class="kpi-card amber">
+        <div class="kpi-label">Total Inquiries &amp; Leads</div>
+        <div id="kpiLeads" class="kpi-val">0</div>
+        <div class="kpi-sub">Across all client companies</div>
+      </div>
+    </div>
+
+    <!-- CLIENT COMPANIES TABLE CARD -->
+    <div class="table-card">
+      <div class="table-header">
+        <div>
+          <h3>Client Organizations &amp; Workspaces</h3>
+          <p style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Manage status, subscription plans, and open company enquiry portals.</p>
+        </div>
+        <input type="text" id="searchInput" class="table-search" placeholder="🔍 Search company or subdomain..." oninput="filterTable()">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Organization</th>
+              <th>Subdomain / Link</th>
+              <th>Master Admin</th>
+              <th>Users</th>
+              <th>Subscription Plan</th>
+              <th>Status</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tenantsTableBody">
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 40px; color: #94a3b8;">Loading platform tenants...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: ONBOARD NEW COMPANY -->
+  <div id="createModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeCreateModal()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🏢 Onboard New Client Company</h3>
+        <button class="modal-close" onclick="closeCreateModal()">✕</button>
+      </div>
+      <form onsubmit="handleCreateCompany(event)">
+        <div class="form-group">
+          <label>Company / Organization Name</label>
+          <input id="newCompanyName" class="form-control" required placeholder="ABC Solutions Pvt Ltd" oninput="autoSub(this.value)">
+        </div>
+        <div class="form-group">
+          <label>Workspace Subdomain</label>
+          <input id="newSubdomain" class="form-control" required placeholder="abc" style="text-transform: lowercase;">
+        </div>
+        <div class="form-group">
+          <label>Master Admin Name</label>
+          <input id="newAdminName" class="form-control" required placeholder="Vikram Mehta">
+        </div>
+        <div class="form-group">
+          <label>Admin Work Email</label>
+          <input id="newEmail" type="email" class="form-control" required placeholder="vikram@abccompany.com">
+        </div>
+        <div class="form-group">
+          <label>Temporary Password</label>
+          <input id="newPassword" type="password" minlength="8" class="form-control" required placeholder="Abc@2026#Secure">
+        </div>
+        <div class="form-group">
+          <label>Subscription Tier</label>
+          <select id="newPlan" class="form-control">
+            <option value="PRO">PRO Plan (Standard)</option>
+            <option value="ENTERPRISE">ENTERPRISE Plan</option>
+            <option value="BASIC">BASIC Plan</option>
+            <option value="FREE">FREE Plan</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="closeCreateModal()">Cancel</button>
+          <button type="submit" id="btnSubmitCompany" class="btn btn-primary" style="flex: 2;">Create Workspace</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let allTenants = [];
+
+    function toast(msg) {
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    function autoSub(val) {
+      document.getElementById('newSubdomain').value = val.toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+
+    function openCreateModal() {
+      document.getElementById('createModal').classList.remove('hidden');
+    }
+
+    function closeCreateModal() {
+      document.getElementById('createModal').classList.add('hidden');
+    }
+
+    async function loadData() {
+      try {
+        const statsRes = await fetch('/api/v1/superadmin/stats');
+        if (statsRes.ok) {
+          const stats = await statsRes.json();
+          document.getElementById('kpiCompanies').textContent = stats.totalCompanies || 0;
+          document.getElementById('kpiActive').textContent = stats.activeCompanies || 0;
+          document.getElementById('kpiUsers').textContent = stats.totalUsers || 0;
+          document.getElementById('kpiLeads').textContent = stats.totalLeads || 0;
+        }
+
+        const tenantsRes = await fetch('/api/v1/superadmin/tenants');
+        if (tenantsRes.ok) {
+          allTenants = await tenantsRes.json();
+          renderTable(allTenants);
+        }
+      } catch (err) {
+        toast('Error loading platform data: ' + err.message);
+      }
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById('tenantsTableBody');
+      if (!list || list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px;">No client companies registered yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = list.map(t => {
+        const initial = (t.companyName || 'C').slice(0, 2).toUpperCase();
+        const enquiryUrl = /company.html?subdomain=;
+        return 
+          <tr>
+            <td>
+              <div class="company-cell">
+                <div class="company-avatar"></div>
+                <div>
+                  <div style="font-weight: 700; color: #ffffff;"></div>
+                  <div style="font-size: 11px; color: #64748b;">ID: #</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="subdomain-tag"></span>
+            </td>
+            <td>
+              <div style="font-weight: 600; color: #ffffff;"></div>
+              <div style="font-size: 12px; color: #94a3b8;"></div>
+            </td>
+            <td>
+              <span style="font-weight: 700; color: #a5b4fc;">👥 </span>
+            </td>
+            <td>
+              <select class="plan-select" onchange="updatePlan(, this.value)">
+                <option value="FREE" >FREE</option>
+                <option value="BASIC" >BASIC</option>
+                <option value="PRO" >PRO</option>
+                <option value="ENTERPRISE" >ENTERPRISE</option>
+              </select>
+            </td>
+            <td>
+              <span class="badge-status ">
+                
+              </span>
+            </td>
+            <td style="text-align: right;">
+              <div class="action-btn-group" style="justify-content: flex-end;">
+                <a href="" target="_blank" class="btn-icon" title="Open Public Enquiry Page">
+                  🌐 Enquiry Portal ↗
+                </a>
+                <button class="btn-icon " onclick="toggleStatus()">
+                  
+                </button>
+              </div>
+            </td>
+          </tr>
+        ;
+      }).join('');
+    }
+
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allTenants.filter(t => 
+        (t.companyName && t.companyName.toLowerCase().includes(q)) ||
+        (t.subdomain && t.subdomain.toLowerCase().includes(q)) ||
+        (t.adminEmail && t.adminEmail.toLowerCase().includes(q))
+      );
+      renderTable(filtered);
+    }
+
+    async function toggleStatus(id) {
+      if (!confirm('Are you sure you want to change this company workspace status?')) return;
+      try {
+        const res = await fetch(/api/v1/superadmin/tenants//toggle-status, { method: 'PUT' });
+        const data = await res.json();
+        toast(data.message);
+        loadData();
+      } catch (err) {
+        toast('Error updating status: ' + err.message);
+      }
+    }
+
+    async function updatePlan(id, plan) {
+      try {
+        const res = await fetch(/api/v1/superadmin/tenants//plan, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan })
+        });
+        const data = await res.json();
+        toast(data.message || 'Plan updated');
+      } catch (err) {
+        toast('Error updating plan: ' + err.message);
+      }
+    }
+
+    async function handleCreateCompany(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmitCompany');
+      btn.disabled = true;
+      btn.textContent = 'Creating...';
+
+      try {
+        const res = await fetch('/api/v1/superadmin/tenants', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            companyName: document.getElementById('newCompanyName').value.trim(),
+            subdomain: document.getElementById('newSubdomain').value.trim(),
+            adminName: document.getElementById('newAdminName').value.trim(),
+            email: document.getElementById('newEmail').value.trim(),
+            password: document.getElementById('newPassword').value,
+            plan: document.getElementById('newPlan').value
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast('✅ Company onboarded successfully!');
+          closeCreateModal();
+          loadData();
+        } else {
+          toast('❌ ' + (data.error || 'Failed to create company'));
+        }
+      } catch (err) {
+        toast('Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Workspace';
+      }
+    }
+
+    // Initial load
+    loadData();
+  </script>
+</body>
+</html>

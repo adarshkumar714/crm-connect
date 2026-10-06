@@ -8,5 +8,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findFirstByTenantIdAndRoleAndActiveTrue(Long tenantId, User.Role role);
+
+    long countByTenantId(Long tenantId);
+
+    java.util.List<User> findByTenantId(Long tenantId);
 }
 
