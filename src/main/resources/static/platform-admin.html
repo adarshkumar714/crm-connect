@@ -445,7 +445,7 @@
     </div>
     <div class="top-actions">
       <a href="/crm" class="btn btn-secondary" target="_blank">↗ Open Client CRM</a>
-      <button class="btn btn-primary" onclick="openCreateModal()">+ Onboard Company</button>
+      <button type="button" class="btn btn-primary" onclick="openCreateModal()">+ Onboard Company</button>
     </div>
   </header>
 
@@ -459,7 +459,7 @@
         <p>Monitor client organizations, manage subscription tiers, and oversee tenant health.</p>
       </div>
       <div>
-        <button class="btn btn-secondary" onclick="loadData()">🔄 Refresh Stats</button>
+        <button type="button" class="btn btn-secondary" onclick="loadData()">🔄 Refresh Stats</button>
       </div>
     </div>
 
@@ -526,7 +526,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3>🏢 Onboard New Client Company</h3>
-        <button class="modal-close" onclick="closeCreateModal()">✕</button>
+        <button type="button" class="modal-close" onclick="closeCreateModal()">✕</button>
       </div>
       <form onsubmit="handleCreateCompany(event)">
         <div class="form-group">
@@ -567,18 +567,19 @@
   </div>
 
   <script>
-    let allTenants = [];
+    var allTenants = [];
 
     function toast(msg) {
-      const t = document.createElement('div');
+      var t = document.createElement('div');
       t.className = 'toast';
       t.textContent = msg;
       document.body.appendChild(t);
-      setTimeout(() => t.remove(), 3500);
+      setTimeout(function() { t.remove(); }, 3500);
     }
 
     function autoSub(val) {
-      document.getElementById('newSubdomain').value = val.toLowerCase().replace(/[^a-z0-9]/g, '');
+      var sanitized = val.toLowerCase().replace(/[^a-z0-9]/g, '');
+      document.getElementById('newSubdomain').value = sanitized;
     }
 
     function openCreateModal() {
@@ -591,16 +592,16 @@
 
     async function loadData() {
       try {
-        const statsRes = await fetch('/api/v1/superadmin/stats');
+        var statsRes = await fetch('/api/v1/superadmin/stats');
         if (statsRes.ok) {
-          const stats = await statsRes.json();
+          var stats = await statsRes.json();
           document.getElementById('kpiCompanies').textContent = stats.totalCompanies || 0;
           document.getElementById('kpiActive').textContent = stats.activeCompanies || 0;
           document.getElementById('kpiUsers').textContent = stats.totalUsers || 0;
           document.getElementById('kpiLeads').textContent = stats.totalLeads || 0;
         }
 
-        const tenantsRes = await fetch('/api/v1/superadmin/tenants');
+        var tenantsRes = await fetch('/api/v1/superadmin/tenants');
         if (tenantsRes.ok) {
           allTenants = await tenantsRes.json();
           renderTable(allTenants);
@@ -611,80 +612,80 @@
     }
 
     function renderTable(list) {
-      const tbody = document.getElementById('tenantsTableBody');
+      var tbody = document.getElementById('tenantsTableBody');
       if (!list || list.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px;">No client companies registered yet.</td></tr>';
         return;
       }
 
-      tbody.innerHTML = list.map(t => {
-        const initial = (t.companyName || 'C').slice(0, 2).toUpperCase();
-        const enquiryUrl = /company.html?subdomain=;
-        return 
-          <tr>
-            <td>
-              <div class="company-cell">
-                <div class="company-avatar"></div>
-                <div>
-                  <div style="font-weight: 700; color: #ffffff;"></div>
-                  <div style="font-size: 11px; color: #64748b;">ID: #</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="subdomain-tag"></span>
-            </td>
-            <td>
-              <div style="font-weight: 600; color: #ffffff;"></div>
-              <div style="font-size: 12px; color: #94a3b8;"></div>
-            </td>
-            <td>
-              <span style="font-weight: 700; color: #a5b4fc;">👥 </span>
-            </td>
-            <td>
-              <select class="plan-select" onchange="updatePlan(, this.value)">
-                <option value="FREE" >FREE</option>
-                <option value="BASIC" >BASIC</option>
-                <option value="PRO" >PRO</option>
-                <option value="ENTERPRISE" >ENTERPRISE</option>
-              </select>
-            </td>
-            <td>
-              <span class="badge-status ">
-                
-              </span>
-            </td>
-            <td style="text-align: right;">
-              <div class="action-btn-group" style="justify-content: flex-end;">
-                <a href="" target="_blank" class="btn-icon" title="Open Public Enquiry Page">
-                  🌐 Enquiry Portal ↗
-                </a>
-                <button class="btn-icon " onclick="toggleStatus()">
-                  
-                </button>
-              </div>
-            </td>
-          </tr>
-        ;
+      tbody.innerHTML = list.map(function(t) {
+        var initial = (t.companyName || 'C').slice(0, 2).toUpperCase();
+        var enquiryUrl = '/company.html?subdomain=' + encodeURIComponent(t.subdomain);
+        var statusBadge = t.active 
+          ? '<span class="badge-status active">● Active</span>' 
+          : '<span class="badge-status suspended">● Suspended</span>';
+        var toggleBtnText = t.active ? 'Suspend' : 'Activate';
+        var dangerClass = t.active ? 'danger' : '';
+
+        return '<tr>' +
+          '<td>' +
+            '<div class="company-cell">' +
+              '<div class="company-avatar">' + initial + '</div>' +
+              '<div>' +
+                '<div style="font-weight: 700; color: #ffffff;">' + (t.companyName || '') + '</div>' +
+                '<div style="font-size: 11px; color: #64748b;">ID: #' + t.id + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</td>' +
+          '<td>' +
+            '<span class="subdomain-tag">' + (t.subdomain || '') + '</span>' +
+          '</td>' +
+          '<td>' +
+            '<div style="font-weight: 600; color: #ffffff;">' + (t.adminName || 'Admin') + '</div>' +
+            '<div style="font-size: 12px; color: #94a3b8;">' + (t.adminEmail || '') + '</div>' +
+          '</td>' +
+          '<td>' +
+            '<span style="font-weight: 700; color: #a5b4fc;">👥 ' + (t.userCount || 1) + '</span>' +
+          '</td>' +
+          '<td>' +
+            '<select class="plan-select" onchange="updatePlan(' + t.id + ', this.value)">' +
+              '<option value="FREE"' + (t.subscriptionPlan === 'FREE' ? ' selected' : '') + '>FREE</option>' +
+              '<option value="BASIC"' + (t.subscriptionPlan === 'BASIC' ? ' selected' : '') + '>BASIC</option>' +
+              '<option value="PRO"' + (t.subscriptionPlan === 'PRO' ? ' selected' : '') + '>PRO</option>' +
+              '<option value="ENTERPRISE"' + (t.subscriptionPlan === 'ENTERPRISE' ? ' selected' : '') + '>ENTERPRISE</option>' +
+            '</select>' +
+          '</td>' +
+          '<td>' + statusBadge + '</td>' +
+          '<td style="text-align: right;">' +
+            '<div class="action-btn-group" style="justify-content: flex-end;">' +
+              '<a href="' + enquiryUrl + '" target="_blank" class="btn-icon" title="Open Public Enquiry Page">' +
+                '🌐 Enquiry Portal ↗' +
+              '</a>' +
+              '<button type="button" class="btn-icon ' + dangerClass + '" onclick="toggleStatus(' + t.id + ')">' +
+                toggleBtnText +
+              '</button>' +
+            '</div>' +
+          '</td>' +
+        '</tr>';
       }).join('');
     }
 
     function filterTable() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = allTenants.filter(t => 
-        (t.companyName && t.companyName.toLowerCase().includes(q)) ||
-        (t.subdomain && t.subdomain.toLowerCase().includes(q)) ||
-        (t.adminEmail && t.adminEmail.toLowerCase().includes(q))
-      );
+      var q = document.getElementById('searchInput').value.toLowerCase();
+      var filtered = allTenants.filter(function(t) {
+        return (t.companyName && t.companyName.toLowerCase().indexOf(q) !== -1) ||
+               (t.subdomain && t.subdomain.toLowerCase().indexOf(q) !== -1) ||
+               (t.adminEmail && t.adminEmail.toLowerCase().indexOf(q) !== -1);
+      });
       renderTable(filtered);
     }
 
     async function toggleStatus(id) {
       if (!confirm('Are you sure you want to change this company workspace status?')) return;
       try {
-        const res = await fetch(/api/v1/superadmin/tenants//toggle-status, { method: 'PUT' });
-        const data = await res.json();
-        toast(data.message);
+        var res = await fetch('/api/v1/superadmin/tenants/' + id + '/toggle-status', { method: 'PUT' });
+        var data = await res.json();
+        toast(data.message || 'Status updated');
         loadData();
       } catch (err) {
         toast('Error updating status: ' + err.message);
@@ -693,12 +694,12 @@
 
     async function updatePlan(id, plan) {
       try {
-        const res = await fetch(/api/v1/superadmin/tenants//plan, {
+        var res = await fetch('/api/v1/superadmin/tenants/' + id + '/plan', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ plan })
+          body: JSON.stringify({ plan: plan })
         });
-        const data = await res.json();
+        var data = await res.json();
         toast(data.message || 'Plan updated');
       } catch (err) {
         toast('Error updating plan: ' + err.message);
@@ -707,12 +708,12 @@
 
     async function handleCreateCompany(e) {
       e.preventDefault();
-      const btn = document.getElementById('btnSubmitCompany');
+      var btn = document.getElementById('btnSubmitCompany');
       btn.disabled = true;
       btn.textContent = 'Creating...';
 
       try {
-        const res = await fetch('/api/v1/superadmin/tenants', {
+        var res = await fetch('/api/v1/superadmin/tenants', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -724,7 +725,7 @@
             plan: document.getElementById('newPlan').value
           })
         });
-        const data = await res.json();
+        var data = await res.json();
         if (data.success) {
           toast('✅ Company onboarded successfully!');
           closeCreateModal();
@@ -740,7 +741,7 @@
       }
     }
 
-    // Initial load
+    // Load data on page load
     loadData();
   </script>
 </body>
