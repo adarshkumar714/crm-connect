@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact &amp; Enquiry | Business Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --text-heading: #0f172a;
+      --text-body: #475569;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-subtle: #eff6ff;
+      --primary-border: #bfdbfe;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      overflow: auto;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* PAGE OVERRIDE / COVER SCROLL EFFECT */
+    /* Container is tall enough for all sections to stick */
+    .page-snap-container {
+      position: relative;
+      height: 200vh; /* 2 sections × 100vh */
+    }
+    /* Each section is sticky and sits at top — next section slides over previous */
+    .page-snap-section {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      will-change: transform;
+    }
+    /* Higher z-index = drawn on top = covers sections below */
+    .page-snap-section:nth-child(1) { z-index: 1; }
+    .page-snap-section:nth-child(2) { z-index: 2; box-shadow: 0 -8px 40px rgba(0,0,0,0.18); }
+
+    /* NAVBAR */
+    .navbar {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 max(5vw, 24px);
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 20px; letter-spacing: -0.4px;
+      color: var(--text-heading); text-decoration: none;
+    }
+    .brand-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      display: grid; place-items: center; color: #ffffff;
+    }
+    .nav-actions { display: flex; align-items: center; gap: 18px; }
+    .nav-link {
+      color: var(--text-body); text-decoration: none;
+      font-weight: 600; font-size: 13.5px; transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--primary); }
+    .btn-portal {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: 8px; font-size: 13px;
+      font-weight: 700; text-decoration: none;
+      background: #f1f5f9; color: #334155;
+      border: 1px solid var(--border-color); transition: all 0.2s;
+    }
+    .btn-portal:hover { background: #e2e8f0; color: var(--text-heading); }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 48px max(5vw, 24px) 64px;
+    }
+
+    /* 2-COLUMN HERO & FORM */
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr;
+      gap: 54px;
+      align-items: start;
+    }
+
+    /* LEFT INFO COLUMN */
+    .info-col { display: flex; flex-direction: column; gap: 24px; }
+
+    .badge-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      width: fit-content;
+      background: var(--primary-subtle); border: 1px solid var(--primary-border);
+      color: var(--primary); font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      padding: 4px 12px; border-radius: 99px;
+    }
+
+    .hero-heading {
+      font-size: clamp(30px, 3.8vw, 42px); font-weight: 800;
+      line-height: 1.2; letter-spacing: -1px; color: var(--text-heading);
+    }
+    .hero-subtext { font-size: 15.5px; color: var(--text-body); line-height: 1.65; }
+
+    .info-features { display: grid; gap: 16px; margin-top: 8px; }
+    .info-card {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: #ffffff; border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 16px 18px;
+    }
+    .info-card-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: #f8fafc; border: 1px solid #e2e8f0;
+      display: grid; place-items: center; font-size: 17px;
+      flex-shrink: 0; color: var(--primary);
+    }
+    .info-card-content h4 { font-size: 14px; font-weight: 700; color: var(--text-heading); margin-bottom: 2px; }
+    .info-card-content p { font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+
+    /* RIGHT ENQUIRY FORM CARD */
+    .form-card {
+      background: #ffffff; border: 1px solid var(--border-color);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px -10px rgba(15,23,42,0.06), 0 0 0 1px rgba(0,0,0,0.02);
+      padding: 36px 32px; position: relative;
+    }
+    .form-header { margin-bottom: 22px; }
+    .form-header h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; color: var(--text-heading); }
+    .form-header p { font-size: 13.5px; color: var(--text-muted); margin-top: 4px; }
+
+    .enquiry-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .full-width { grid-column: 1 / -1; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 700; color: #334155; }
+    .form-group label span.required { color: #dc2626; margin-left: 2px; }
+    .form-control {
+      width: 100%; padding: 10.5px 14px; background: #f8fafc;
+      border: 1px solid #cbd5e1; border-radius: 9px; font-size: 13.5px;
+      color: var(--text-heading); outline: none; font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+    }
+    .form-control::placeholder { color: #94a3b8; }
+    .form-control:focus { background: #ffffff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    textarea.form-control { resize: vertical; min-height: 90px; }
+
+    .btn-submit {
+      width: 100%; padding: 12.5px; border-radius: 9px; font-size: 14px;
+      font-weight: 700; color: #ffffff; background: var(--primary); border: none;
+      cursor: pointer; transition: background-color 0.15s, transform 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover:not(:disabled) { background: var(--primary-hover); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+    .btn-spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.35); border-top-color: #ffffff;
+      border-radius: 50%; animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .success-box { display: none; text-align: center; padding: 32px 16px; }
+    .success-icon {
+      width: 60px; height: 60px; border-radius: 50%; background: #ecfdf5;
+      border: 2px solid #059669; color: #059669; display: grid;
+      place-items: center; font-size: 26px; font-weight: 800; margin: 0 auto 16px;
+    }
+    .success-box h3 { font-size: 20px; font-weight: 800; color: var(--text-heading); margin-bottom: 8px; }
+    .success-box p { font-size: 14px; color: var(--text-body); line-height: 1.6; max-width: 400px; margin: 0 auto 20px; }
+    .btn-reset {
+      background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155;
+      padding: 9px 20px; border-radius: 8px; font-size: 13px;
+      font-weight: 600; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-reset:hover { background: #e2e8f0; }
+
+    /* EMAIL OTP VERIFICATION STYLES */
+    .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .badge-verified {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #059669;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 99px;
+    }
+    .email-input-wrap {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-verify-email {
+      white-space: nowrap;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-verify-email:hover:not(:disabled) {
+      background: #dbeafe;
+    }
+    .btn-verify-email:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .otp-status-msg {
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .otp-status-msg.info { color: #2563eb; }
+    .otp-status-msg.error { color: #dc2626; }
+    .otp-status-msg.success { color: #059669; }
+
+    .otp-verify-card {
+      background: #f8fafc;
+      border: 1px dashed #bfdbfe;
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: -4px;
+    }
+    .otp-input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .otp-input {
+      letter-spacing: 4px;
+      font-weight: 700;
+      font-size: 16px;
+      text-align: center;
+      max-width: 140px;
+    }
+    .btn-verify-otp {
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-verify-otp:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+    .otp-hint {
+      font-size: 11.5px;
+      color: #64748b;
+      margin-top: 6px;
+      display: block;
+    }
+
+    .lock-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: #1e40af;
+      margin: 2px 0 8px;
+    }
+    .lock-banner.unlocked {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #047857;
+    }
+
+    .hidden { display: none !important; }
+
+    .step2-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .step2-grid.hidden {
+      display: none !important;
+    }
+
+    /* SERVICES OVERVIEW SECTION */
+    .services-section {
+      margin-top: 64px; padding-top: 48px;
+      border-top: 1px solid var(--border-color);
+    }
+    .services-header { text-align: center; margin-bottom: 36px; }
+    .services-header h3 { font-size: 22px; font-weight: 800; color: var(--text-heading); }
+    .services-header p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .service-card {
+      background: #ffffff; border: 1px solid var(--border-color);
+      border-radius: 14px; padding: 24px;
+    }
+    .service-card h4 {
+      font-size: 16px; font-weight: 700; color: var(--text-heading);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+    }
+    .service-card p { font-size: 13.5px; color: var(--text-body); line-height: 1.55; }
+
+    /* FOOTER */
+    .footer {
+      background: #ffffff; border-top: 1px solid var(--border-color);
+      padding: 32px max(5vw, 24px); text-align: center;
+      color: var(--text-muted); font-size: 13px;
+    }
+    .footer p { margin-bottom: 4px; }
+
+    @media (max-width: 900px) {
+      .hero-layout { grid-template-columns: 1fr; gap: 36px; }
+      .enquiry-form { grid-template-columns: 1fr; }
+      .form-card { padding: 26px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-snap-container">
+
+  <!-- ═══ SNAP PAGE 1: NAVBAR + HERO + ENQUIRY FORM ═══ -->
+  <div class="page-snap-section" style="background:#f8fafc; overflow-y:auto;">
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <span id="companyBrand">ABC Solutions</span>
+      </a>
+      <div class="nav-actions">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="/crm" class="btn-portal">CRM Login &rarr;</a>
+      </div>
+    </header>
+
+    <!-- MAIN HERO -->
+    <main style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+      <div class="hero-layout">
+
+        <!-- LEFT: INFO & CONTACT DETAILS -->
+        <div class="info-col">
+          <span class="badge-tag">Get in Touch</span>
+          <h1 class="hero-heading">We're Here to Help Your Business Grow.</h1>
+          <p class="hero-subtext">
+            Have a question about our services or need assistance with your business requirements?
+            Fill out the form and our team will get in touch with you promptly.
+          </p>
+          <div class="info-features">
+            <div class="info-card">
+              <div class="info-card-icon">&#x2709;&#xFE0F;</div>
+              <div class="info-card-content">
+                <h4>Instant Confirmation</h4>
+                <p>You will receive an automated confirmation copy sent directly to your email inbox.</p>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-icon">&#x26A1;</div>
+              <div class="info-card-content">
+                <h4>Direct Support</h4>
+                <p>Your enquiry is routed directly to our specialist team for prompt assistance.</p>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-icon">&#x1F512;</div>
+              <div class="info-card-content">
+                <h4>Privacy Protected</h4>
+                <p>Your details and business information are kept strictly confidential.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: ENQUIRY FORM -->
+        <div id="contact" class="form-card">
+          <div id="formWrapper">
+            <div class="form-header">
+              <h2>Send Us an Enquiry</h2>
+              <p>Please provide your details below and we will respond shortly.</p>
+            </div>
+            <form class="enquiry-form" onsubmit="submitEnquiry(event)">
+              <!-- STEP 1: EMAIL & OTP VERIFICATION -->
+              <div class="form-group full-width">
+                <div class="label-row">
+                  <label for="email">Work Email <span class="required">*</span></label>
+                  <span id="emailVerifiedBadge" class="badge-verified hidden">&#10003; Email Verified</span>
+                </div>
+                <div class="email-input-wrap">
+                  <input id="email" type="email" class="form-control" required placeholder="name@company.com" oninput="handleEmailChange()" onkeydown="if(event.key==='Enter'){event.preventDefault();sendOtpCode();}">
+                  <button type="button" id="btnSendOtp" class="btn-verify-email" onclick="sendOtpCode(); return false;">
+                    <span>Verify Email</span>
+                  </button>
+                </div>
+                <div id="otpStatusMsg" class="otp-status-msg hidden"></div>
+              </div>
+
+              <!-- OTP INPUT BOX -->
+              <div id="otpBox" class="form-group full-width otp-verify-card hidden">
+                <label for="otpCode">Enter 6-Digit OTP Code <span class="required">*</span></label>
+                <div class="otp-input-row">
+                  <input id="otpCode" type="text" maxlength="6" class="form-control otp-input" placeholder="123456" oninput="this.value=this.value.replace(/[^0-9]/g,'')" onkeydown="if(event.key==='Enter'){event.preventDefault();verifyOtpCode();}">
+                  <button type="button" id="btnVerifyOtp" class="btn-verify-otp" onclick="verifyOtpCode(); return false;">
+                    <span>Submit OTP</span>
+                  </button>
+                </div>
+                <span class="otp-hint">A 6-digit code has been sent to your email. Check your inbox or spam folder.</span>
+              </div>
+
+              <!-- LOCKED STEP BANNER -->
+              <div id="lockBanner" class="full-width lock-banner">
+                <span>&#x1F512; Enter your email &amp; click <strong>Verify Email</strong> to receive an OTP and unlock the enquiry form.</span>
+              </div>
+
+              <!-- STEP 2: REMAINING ENQUIRY DETAILS -->
+              <div id="step2Fields" class="full-width step2-grid">
+                <div class="form-group">
+                  <label for="first">First Name <span class="required">*</span></label>
+                  <input id="first" class="form-control form-step-field" placeholder="First name">
+                </div>
+                <div class="form-group">
+                  <label for="last">Last Name <span class="required">*</span></label>
+                  <input id="last" class="form-control form-step-field" placeholder="Last name">
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input id="phone" type="tel" class="form-control form-step-field" placeholder="+91 98765 43210">
+                </div>
+                <div class="form-group">
+                  <label for="companyName">Company / Organization</label>
+                  <input id="companyName" class="form-control form-step-field" placeholder="Company name">
+                </div>
+                <div class="form-group full-width">
+                  <label for="message">Message / Requirements</label>
+                  <textarea id="message" class="form-control form-step-field" placeholder="Tell us how we can help you..."></textarea>
+                </div>
+                <div id="enquiryStatusMsg" class="full-width otp-status-msg hidden"></div>
+                <div class="full-width" style="margin-top: 6px;">
+                  <button id="submitBtn" type="submit" class="btn-submit">
+                    <span>Submit Genuine Enquiry</span><span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- SUCCESS BOX -->
+          <div id="successBox" class="success-box">
+            <div class="success-icon">&#10003;</div>
+            <h3>Enquiry Received!</h3>
+            <p id="successMsg">Thank you for reaching out. We have sent a confirmation email and our team will contact you shortly.</p>
+            <button type="button" class="btn-reset" onclick="resetForm()">Submit Another Enquiry</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div><!-- end snap page 1 -->
+
+  <!-- ═══ SNAP PAGE 2: SERVICES + FOOTER ═══ -->
+  <div class="page-snap-section" id="services" style="background:#f8fafc; justify-content:center; align-items:center;">
+    <div style="max-width: 1100px; width:100%; margin: 0 auto; padding: 64px max(5vw, 24px);">
+      <div class="services-header">
+        <h3>How We Can Help</h3>
+        <p>Comprehensive solutions tailored to streamline your business operations.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <h4>&#x1F4BC; Business Solutions</h4>
+          <p>Custom tailored systems designed to meet your company's operational and growth requirements.</p>
+        </div>
+        <div class="service-card">
+          <h4>&#x2699;&#xFE0F; Workflow Integration</h4>
+          <p>Seamlessly connect your customer data, lead tracking, and team workflows in one organized hub.</p>
+        </div>
+        <div class="service-card">
+          <h4>&#x1F91D; Dedicated Support</h4>
+          <p>Direct assistance and consultation from our experienced team to keep your systems running smoothly.</p>
+        </div>
+      </div>
+      <footer style="margin-top: 48px; text-align:center; color:#64748b; font-size:13px; padding-top:24px; border-top:1px solid #e2e8f0;">
+        <p><strong id="footerBrand">ABC Solutions</strong> &copy; 2026. All rights reserved.</p>
+        <p style="font-size: 12px; margin-top:4px;">Contact &amp; Customer Enquiry Portal</p>
+      </footer>
+    </div>
+  </div><!-- end snap page 2 -->
+
+</div><!-- end page-snap-container -->
+
+<script>
+    const params = new URLSearchParams(location.search);
+    let subdomain = params.get('subdomain') || location.pathname.split('/').filter(Boolean).pop() || 'default';
+    let isEmailVerified = false;
+
+    fetch('/api/v1/public/enquiries/company')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data) {
+          subdomain = data.subdomain || subdomain;
+          if (data.companyName) {
+            document.getElementById('companyBrand').textContent = data.companyName;
+            document.getElementById('footerBrand').textContent = data.companyName;
+            document.title = `Contact & Enquiry | ${data.companyName}`;
+          }
+        }
+      }).catch(() => {});
+
+    function showOtpStatus(msg, type) {
+      const el = document.getElementById('otpStatusMsg');
+      el.textContent = msg;
+      el.className = 'otp-status-msg ' + type;
+      el.classList.remove('hidden');
+    }
+
+    function showEnquiryStatus(msg, type) {
+      const el = document.getElementById('enquiryStatusMsg');
+      el.textContent = msg;
+      el.className = 'full-width otp-status-msg ' + type;
+      el.classList.remove('hidden');
+    }
+
+    function handleEmailChange() {
+      if (isEmailVerified) {
+        isEmailVerified = false;
+        document.getElementById('emailVerifiedBadge').classList.add('hidden');
+        document.getElementById('email').disabled = false;
+        const btnSend = document.getElementById('btnSendOtp');
+        btnSend.disabled = false;
+        btnSend.style.display = 'inline-flex';
+        document.getElementById('otpBox').classList.add('hidden');
+        document.getElementById('otpStatusMsg').classList.add('hidden');
+        setFormFieldsEnabled(false);
+      }
+    }
+
+    async function sendOtpCode() {
+      const email = document.getElementById('email').value.trim();
+      if (!email || !email.includes('@')) {
+        showOtpStatus('Please enter a valid work email address first.', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnSendOtp');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="btn-spinner"></span><span>Sending...</span>`;
+      showOtpStatus('Sending verification code to ' + email + '...', 'info');
+
+      try {
+        const res = await fetch('/api/v1/public/enquiries/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, subdomain })
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || 'Failed to send OTP.');
+
+        showOtpStatus(result.message || 'OTP sent! Please check your email inbox/spam.', 'success');
+        document.getElementById('otpBox').classList.remove('hidden');
+        document.getElementById('otpCode').focus();
+      } catch (err) {
+        showOtpStatus(err.message || 'Unable to send OTP. Try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Verify Email</span>`;
+      }
+    }
+
+    async function verifyOtpCode() {
+      const email = document.getElementById('email').value.trim();
+      const otp = document.getElementById('otpCode').value.trim();
+
+      if (!otp || otp.length !== 6) {
+        showOtpStatus('Please enter the 6-digit OTP sent to your email.', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnVerifyOtp');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="btn-spinner"></span><span>Verifying...</span>`;
+
+      try {
+        const res = await fetch('/api/v1/public/enquiries/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp })
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || 'Invalid OTP code.');
+
+        isEmailVerified = true;
+
+        // UI Updates on Success:
+        document.getElementById('emailVerifiedBadge').classList.remove('hidden');
+        document.getElementById('email').disabled = true;
+        document.getElementById('btnSendOtp').style.display = 'none'; // Hide Verify Email button
+        document.getElementById('otpBox').classList.add('hidden'); // Hide OTP box
+        document.getElementById('otpStatusMsg').classList.add('hidden'); // Hide OTP status text
+
+        // Unlock & Reveal remaining enquiry fields
+        setFormFieldsEnabled(true);
+
+        // Auto-focus First Name field
+        document.getElementById('first').focus();
+      } catch (err) {
+        showOtpStatus(err.message || 'Verification failed. Try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Submit OTP</span>`;
+      }
+    }
+
+    function setFormFieldsEnabled(enabled) {
+      const lockBanner = document.getElementById('lockBanner');
+      if (enabled) {
+        lockBanner.className = 'full-width lock-banner unlocked';
+        lockBanner.innerHTML = '<span>✅ <strong>Email Verified!</strong> Please complete your details below to submit your enquiry.</span>';
+      } else {
+        lockBanner.className = 'full-width lock-banner';
+        lockBanner.innerHTML = '<span>🔒 Enter your email &amp; click <strong>Verify Email</strong> to receive an OTP and unlock the enquiry form.</span>';
+      }
+    }
+
+    async function submitEnquiry(e) {
+      e.preventDefault();
+      if (!isEmailVerified) {
+        showOtpStatus('Please verify your email address via OTP first.', 'error');
+        return false;
+      }
+
+      const firstName = document.getElementById('first').value.trim();
+      const lastName = document.getElementById('last').value.trim();
+      if (!firstName || !lastName) {
+        showEnquiryStatus('Please fill in both First Name and Last Name.', 'error');
+        return false;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      const formWrapper = document.getElementById('formWrapper');
+      const successBox = document.getElementById('successBox');
+      const email = document.getElementById('email').value.trim();
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="btn-spinner"></span><span>Submitting...</span>`;
+
+      try {
+        const payload = {
+          firstName,
+          lastName,
+          email,
+          phone: document.getElementById('phone').value.trim() || null,
+          companyName: document.getElementById('companyName').value.trim() || null,
+          message: document.getElementById('message').value.trim() || null
+        };
+        const res = await fetch('/api/v1/public/enquiries/submit/' + encodeURIComponent(subdomain), {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+
+        if (!res.ok) {
+          let errText = result.message || 'Unable to submit enquiry. Please try again.';
+          if (result.errors && Array.isArray(result.errors) && result.errors.length > 0) {
+            errText = result.errors.map(err => err.defaultMessage || (err.field + ' is required')).join(', ');
+          }
+          throw new Error(errText);
+        }
+
+        document.getElementById('successMsg').textContent =
+          `Thank you! Your enquiry has been received and a confirmation receipt has been emailed to ${email}. Our team will contact you shortly.`;
+        formWrapper.style.display = 'none';
+        successBox.style.display = 'block';
+      } catch (err) {
+        showEnquiryStatus(err.message || 'An error occurred. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Submit Genuine Enquiry</span><span>→</span>`;
+      }
+    }
+
+    function resetForm() {
+      isEmailVerified = false;
+      document.getElementById('formWrapper').style.display = 'block';
+      document.getElementById('successBox').style.display = 'none';
+      document.getElementById('email').disabled = false;
+
+      const btnSend = document.getElementById('btnSendOtp');
+      btnSend.disabled = false;
+      btnSend.style.display = 'inline-flex';
+
+      document.getElementById('emailVerifiedBadge').classList.add('hidden');
+      document.getElementById('otpBox').classList.add('hidden');
+      document.getElementById('otpStatusMsg').classList.add('hidden');
+      document.getElementById('enquiryStatusMsg').classList.add('hidden');
+      setFormFieldsEnabled(false);
+    }
+  </script>
+
+</body>
+</html>

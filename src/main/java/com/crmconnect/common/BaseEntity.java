@@ -1,0 +1,3 @@
+package com.crmconnect.common;
+import jakarta.persistence.*; import java.time.LocalDateTime;
+@MappedSuperclass public abstract class BaseEntity { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; @Column(nullable=false,updatable=false) private LocalDateTime createdAt; @Column(nullable=false) private LocalDateTime updatedAt; @PrePersist void created(){createdAt=LocalDateTime.now();updatedAt=createdAt;} @PreUpdate void updated(){updatedAt=LocalDateTime.now();} public Long getId(){return id;} public void setId(Long id){this.id=id;} public LocalDateTime getCreatedAt(){return createdAt;} public void setCreatedAt(LocalDateTime v){createdAt=v;} public LocalDateTime getUpdatedAt(){return updatedAt;} public void setUpdatedAt(LocalDateTime v){updatedAt=v;} }

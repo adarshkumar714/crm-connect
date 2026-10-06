@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CRMConnect | Team Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-border: #bfdbfe;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-50: #ecfdf5;
+      --emerald-border: #a7f3d0;
+      --amber-600: #d97706;
+      --amber-500: #f59e0b;
+      --amber-50: #fffbeb;
+      --amber-border: #fde68a;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-50: #fff1f2;
+      --rose-border: #fecdd3;
+      --purple-600: #7c3aed;
+      --purple-500: #8b5cf6;
+      --purple-50: #f5f3ff;
+      --purple-border: #ddd6fe;
+      --radius: 10px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      background: var(--slate-50);
+      color: var(--slate-800);
+      min-height: 100vh;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    button, input, select, textarea { font-family: inherit; font-size: inherit; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .hidden { display: none !important; }
+
+    /* HEADER */
+    .app-header {
+      background: var(--slate-900);
+      color: #ffffff;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 max(4vw, 24px);
+      border-bottom: 1px solid #1e293b;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 18px;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+    }
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      background: #1e293b;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+    }
+    .avatar-sm {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-weight: 700;
+      font-size: 11px;
+      display: grid;
+      place-items: center;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 16px;
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      text-decoration: none;
+    }
+    .btn-secondary {
+      background: #ffffff;
+      border-color: var(--slate-200);
+      color: var(--slate-700);
+    }
+    .btn-secondary:hover {
+      background: var(--slate-50);
+      border-color: var(--slate-300);
+      text-decoration: none;
+    }
+    .btn-header {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+    .btn-header:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+    .btn-danger-outline {
+      background: var(--rose-50);
+      color: var(--rose-600);
+      border: 1px solid var(--rose-border);
+    }
+    .btn-danger-outline:hover {
+      background: #ffe4e6;
+    }
+    .btn-success-outline {
+      background: var(--emerald-50);
+      color: var(--emerald-600);
+      border: 1px solid var(--emerald-border);
+    }
+    .btn-success-outline:hover {
+      background: #d1fae5;
+    }
+
+    /* MAIN WRAPPER */
+    .container {
+      max-width: 1200px;
+      margin: 32px auto;
+      padding: 0 24px 60px;
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .page-header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--slate-900);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+    .page-header p {
+      color: var(--slate-500);
+      font-size: 13.5px;
+    }
+
+    /* STATS GRID */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary);
+    }
+    .stat-accent.purple { background: var(--purple-500); }
+    .stat-accent.emerald { background: var(--emerald-500); }
+    .stat-accent.amber { background: var(--amber-500); }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--slate-500);
+      margin-bottom: 6px;
+    }
+    .stat-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--slate-900);
+      line-height: 1.1;
+    }
+    .stat-desc {
+      font-size: 11.5px;
+      color: var(--slate-500);
+      margin-top: 6px;
+    }
+
+    /* CONTENT PANEL */
+    .panel {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* TOOLBAR */
+    .toolbar {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--slate-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: #ffffff;
+    }
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 280px;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 320px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: var(--slate-50);
+      transition: all 0.15s;
+    }
+    .search-input:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 9px;
+      color: var(--slate-400);
+      font-size: 14px;
+    }
+    .filter-select {
+      padding: 8px 12px;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: #ffffff;
+      color: var(--slate-700);
+    }
+    .filter-select:focus {
+      border-color: var(--primary);
+    }
+
+    /* TABLE */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .crm-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .crm-table th {
+      background: var(--slate-50);
+      color: var(--slate-500);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--slate-200);
+    }
+    .crm-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--slate-100);
+      vertical-align: middle;
+      font-size: 13px;
+    }
+    .crm-table tr:last-child td {
+      border-bottom: none;
+    }
+    .crm-table tr:hover td {
+      background: #fcfdfe;
+    }
+
+    /* MEMBER ROW DETAILS */
+    .member-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .member-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .member-name {
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+    .member-sub {
+      font-size: 11.5px;
+      color: var(--slate-500);
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 99px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .badge-admin {
+      background: var(--purple-50);
+      color: var(--purple-600);
+      border: 1px solid var(--purple-border);
+    }
+    .badge-manager {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
+    }
+    .badge-rep {
+      background: var(--emerald-50);
+      color: var(--emerald-600);
+      border: 1px solid var(--emerald-border);
+    }
+    .badge-active {
+      background: var(--emerald-50);
+      color: var(--emerald-600);
+      border: 1px solid var(--emerald-border);
+    }
+    .badge-inactive {
+      background: var(--slate-100);
+      color: var(--slate-500);
+      border: 1px solid var(--slate-200);
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      animation: modalPop 0.2s ease-out;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--slate-100);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-header h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      color: var(--slate-400);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .modal-close:hover {
+      background: var(--slate-100);
+      color: var(--slate-700);
+    }
+    .modal-body {
+      padding: 24px;
+      display: grid;
+      gap: 16px;
+    }
+    .modal-footer {
+      padding: 14px 24px;
+      background: var(--slate-50);
+      border-top: 1px solid var(--slate-100);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .form-group {
+      display: grid;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--slate-600);
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      background: #ffffff;
+      color: var(--slate-800);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+    .help-text {
+      font-size: 11.5px;
+      color: var(--slate-500);
+      margin-top: 2px;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--slate-400);
+    }
+    .empty-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    /* TOAST */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 200;
+      display: grid;
+      gap: 10px;
+    }
+    .toast {
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: var(--slate-900);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.2s ease-out;
+    }
+    .toast.success { background: #065f46; border: 1px solid #059669; }
+    .toast.error { background: #9f1239; border: 1px solid #e11d48; }
+    @keyframes toastIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 640px) {
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .toolbar-left { flex-direction: column; }
+      .search-wrap { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-brand">
+      <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius: 8px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);">
+        <rect width="36" height="36" rx="9" fill="url(#crm-logo-team)"/>
+        <path d="M18 8L26.5 13V23L18 28L9.5 23V13L18 8Z" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linejoin="round"/>
+        <circle cx="18" cy="18" r="3.2" fill="#ffffff"/>
+        <circle cx="18" cy="8" r="2.2" fill="#c7d2fe"/>
+        <circle cx="26.5" cy="13" r="2.2" fill="#c7d2fe"/>
+        <circle cx="26.5" cy="23" r="2.2" fill="#c7d2fe"/>
+        <circle cx="18" cy="28" r="2.2" fill="#c7d2fe"/>
+        <circle cx="9.5" cy="23" r="2.2" fill="#c7d2fe"/>
+        <circle cx="9.5" cy="13" r="2.2" fill="#c7d2fe"/>
+        <line x1="18" y1="18" x2="18" y2="8" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/>
+        <line x1="18" y1="18" x2="26.5" y2="13" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/>
+        <line x1="18" y1="18" x2="26.5" y2="23" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/>
+        <line x1="18" y1="18" x2="18" y2="28" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/>
+        <line x1="18" y1="18" x2="9.5" y2="23" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/>
+        <line x1="18" y1="18" x2="9.5" y2="13" stroke="rgba(255,255,255,0.8)" stroke-width="1.4"/>
+        <defs>
+          <linearGradient id="crm-logo-team" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#4f46e5"/>
+            <stop offset="0.5" stop-color="#6366f1"/>
+            <stop offset="1" stop-color="#7c3aed"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span>CRMConnect</span>
+      <span style="font-weight: 400; font-size: 14px; color: #94a3b8; margin-left: 4px;">/ Team</span>
+    </div>
+    <div class="header-nav">
+      <div class="user-pill" id="userPill">
+        <div class="avatar-sm" id="userAvatar">AD</div>
+        <span id="userEmail">admin@crmconnect.com</span>
+      </div>
+      <a href="/index.html" class="btn btn-header btn-sm">← Back to Workspace</a>
+      <button class="btn btn-header btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="container">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div>
+        <h1>Workspace Team & Access</h1>
+        <p>Invite colleagues, configure roles, and manage sales workspace access.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openInviteModal()">+ Invite Team Member</button>
+    </div>
+
+    <!-- STATS OVERVIEW -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-accent"></div>
+        <div class="stat-label">TOTAL TEAM MEMBERS</div>
+        <div id="statTotal" class="stat-val">0</div>
+        <div class="stat-desc">Workspace users</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-accent emerald"></div>
+        <div class="stat-label">SALES REPS</div>
+        <div id="statReps" class="stat-val">0</div>
+        <div class="stat-desc">Active account owners</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-accent"></div>
+        <div class="stat-label">MANAGERS</div>
+        <div id="statManagers" class="stat-val">0</div>
+        <div class="stat-desc">Team supervisors</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-accent purple"></div>
+        <div class="stat-label">ADMINISTRATORS</div>
+        <div id="statAdmins" class="stat-val">0</div>
+        <div class="stat-desc">Workspace owners</div>
+      </div>
+    </div>
+
+    <!-- MEMBERS PANEL -->
+    <div class="panel">
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input id="searchInput" class="search-input" placeholder="Search team by name or email..." oninput="filterTeam()">
+          </div>
+          <select id="roleFilter" class="filter-select" onchange="filterTeam()">
+            <option value="ALL">All Roles</option>
+            <option value="SALES_REP">Sales Reps</option>
+            <option value="MANAGER">Managers</option>
+            <option value="ADMIN">Administrators</option>
+          </select>
+          <select id="statusFilter" class="filter-select" onchange="filterTeam()">
+            <option value="ALL">All Statuses</option>
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+        <div>
+          <button class="btn btn-secondary btn-sm" onclick="loadTeam()">🔄 Refresh</button>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-wrap">
+        <table class="crm-table">
+          <thead>
+            <tr>
+              <th>Team Member</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="teamTableBody">
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 40px; color: var(--slate-400);">Loading team members...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- INVITE MODAL -->
+  <div id="inviteModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeInviteModal()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Invite Team Member</h3>
+        <button class="modal-close" onclick="closeInviteModal()">✕</button>
+      </div>
+      <form onsubmit="handleInvite(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input id="mFullName" class="form-control" required placeholder="e.g. Sarah Connor">
+          </div>
+          <div class="form-group">
+            <label>Work Email</label>
+            <input id="mEmail" type="email" class="form-control" required placeholder="sarah@company.com">
+          </div>
+          <div class="form-group">
+            <label>Temporary Password</label>
+            <input id="mPassword" type="password" minlength="8" class="form-control" required placeholder="At least 8 characters">
+            <div class="help-text">Member can change this after signing in.</div>
+          </div>
+          <div class="form-group">
+            <label>Workspace Role</label>
+            <select id="mRole" class="form-control">
+              <option value="SALES_REP">Sales Representative (Manages assigned leads & deals)</option>
+              <option value="MANAGER">Sales Manager (Views all pipeline & team activities)</option>
+              <option value="ADMIN">Administrator (Full tenant settings & user management)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeInviteModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Invite Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script>
+    const el = id => document.getElementById(id);
+    const esc = s => String(s ?? '—').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    let token = sessionStorage.crmconnectToken;
+    let currentUser = null;
+    let allMembers = [];
+
+    // Parse JWT
+    function parseToken() {
+      if (!token) return null;
+      try {
+        const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const json = JSON.parse(atob(b64));
+        return { email: json.sub, tenantId: json.tenantId, role: json.role };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Authenticate on start
+    currentUser = parseToken();
+    if (!currentUser) {
+      window.location.href = '/crm';
+    } else {
+      el('userEmail').textContent = currentUser.email;
+      const initials = (currentUser.email.slice(0, 2)).toUpperCase();
+      el('userAvatar').textContent = initials;
+    }
+
+    // Toast Notification
+    function showToast(msg, type = 'success') {
+      const c = el('toastContainer');
+      const t = document.createElement('div');
+      t.className = 'toast ' + type;
+      t.innerHTML = `<span>${type === 'success' ? '✓' : '⚠️'}</span> <span>${esc(msg)}</span>`;
+      c.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transition = 'opacity 0.3s';
+        setTimeout(() => t.remove(), 300);
+      }, 3500);
+    }
+
+    // API Helper
+    async function api(path, opts = {}) {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+        ...(opts.headers || {})
+      };
+      const res = await fetch('/api/v1' + path, { ...opts, headers });
+      if (res.status === 401 || res.status === 403) {
+        sessionStorage.removeItem('crmconnectToken');
+        try { localStorage.removeItem('crmconnectToken'); } catch (e) {}
+        window.location.href = '/crm';
+        throw new Error('Unauthorized');
+      }
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Request failed');
+      }
+      return res.status === 204 ? null : res.json();
+    }
+
+    // Modal controls
+    function openInviteModal() {
+      el('mFullName').value = '';
+      el('mEmail').value = '';
+      el('mPassword').value = '';
+      el('mRole').value = 'SALES_REP';
+      el('inviteModal').classList.remove('hidden');
+    }
+
+    function closeInviteModal() {
+      el('inviteModal').classList.add('hidden');
+    }
+
+    // Logout
+    function logout() {
+      sessionStorage.removeItem('crmconnectToken');
+      try { localStorage.removeItem('crmconnectToken'); } catch (e) {}
+      window.location.href = '/crm';
+    }
+
+    // Load Team
+    async function loadTeam() {
+      try {
+        allMembers = await api('/users');
+        updateStats();
+        renderTable(allMembers);
+      } catch (err) {
+        showToast(err.message, 'error');
+        el('teamTableBody').innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 32px; color: var(--rose-600);">${esc(err.message)}</td></tr>`;
+      }
+    }
+
+    // Update Stats
+    function updateStats() {
+      el('statTotal').textContent = allMembers.length;
+      el('statReps').textContent = allMembers.filter(m => m.role === 'SALES_REP' && m.active).length;
+      el('statManagers').textContent = allMembers.filter(m => m.role === 'MANAGER' && m.active).length;
+      el('statAdmins').textContent = allMembers.filter(m => m.role === 'ADMIN' && m.active).length;
+    }
+
+    // Filter and Render
+    function filterTeam() {
+      const search = el('searchInput').value.trim().toLowerCase();
+      const role = el('roleFilter').value;
+      const status = el('statusFilter').value;
+
+      const filtered = allMembers.filter(m => {
+        const matchSearch = !search ||
+          (m.fullName && m.fullName.toLowerCase().includes(search)) ||
+          (m.email && m.email.toLowerCase().includes(search));
+        const matchRole = role === 'ALL' || m.role === role;
+        const matchStatus = status === 'ALL' ||
+          (status === 'ACTIVE' && m.active) ||
+          (status === 'INACTIVE' && !m.active);
+        return matchSearch && matchRole && matchStatus;
+      });
+
+      renderTable(filtered);
+    }
+
+    function getRoleBadge(role) {
+      if (role === 'ADMIN') return '<span class="badge badge-admin">👑 Admin</span>';
+      if (role === 'MANAGER') return '<span class="badge badge-manager">💼 Manager</span>';
+      return '<span class="badge badge-rep">🎯 Sales Rep</span>';
+    }
+
+    function renderTable(members) {
+      const tbody = el('teamTableBody');
+      if (!members || members.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5">
+              <div class="empty-state">
+                <div class="empty-icon">👥</div>
+                <h4 style="font-size: 15px; font-weight: 700; color: var(--slate-700); margin-bottom: 4px;">No team members found</h4>
+                <p style="font-size: 12.5px;">Try adjusting your search filters or invite a new member.</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = members.map(m => {
+        const initials = ((m.fullName || m.email || 'U').split(' ').map(p => p[0]).join('').slice(0, 2)).toUpperCase();
+        const isSelf = currentUser && currentUser.email && m.email && currentUser.email.toLowerCase() === m.email.toLowerCase();
+
+        return `
+          <tr>
+            <td>
+              <div class="member-cell">
+                <div class="member-avatar">${esc(initials)}</div>
+                <div>
+                  <div class="member-name">${esc(m.fullName || 'Team Member')} ${isSelf ? '<span style="font-size: 10px; color: var(--primary); font-weight: 700; margin-left: 4px;">(You)</span>' : ''}</div>
+                  <div class="member-sub">ID #${m.id}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span style="color: var(--slate-700); font-family: monospace, sans-serif; font-size: 12.5px;">${esc(m.email)}</span>
+            </td>
+            <td>${getRoleBadge(m.role)}</td>
+            <td>
+              <span class="badge ${m.active ? 'badge-active' : 'badge-inactive'}">
+                ${m.active ? '● Active' : '○ Inactive'}
+              </span>
+            </td>
+            <td style="text-align: right;">
+              ${isSelf ? '<span style="font-size: 11.5px; color: var(--slate-400); font-style: italic;">Current session</span>' : `
+                <button class="btn btn-sm ${m.active ? 'btn-danger-outline' : 'btn-success-outline'}" onclick="toggleUserStatus(${m.id}, ${!m.active})">
+                  ${m.active ? 'Deactivate' : 'Activate'}
+                </button>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Toggle Status
+    async function toggleUserStatus(id, newStatus) {
+      const action = newStatus ? 'activate' : 'deactivate';
+      if (!confirm(`Are you sure you want to ${action} this user?`)) return;
+
+      try {
+        await api(`/users/${id}/active?value=${newStatus}`, { method: 'PATCH' });
+        showToast(`User ${newStatus ? 'activated' : 'deactivated'} successfully.`);
+        loadTeam();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // Handle Invite Form
+    async function handleInvite(e) {
+      e.preventDefault();
+      const body = {
+        fullName: el('mFullName').value.trim(),
+        email: el('mEmail').value.trim(),
+        password: el('mPassword').value,
+        role: el('mRole').value
+      };
+
+      try {
+        await api('/users', {
+          method: 'POST',
+          body: JSON.stringify(body)
+        });
+        showToast('Team member invited successfully.');
+        closeInviteModal();
+        loadTeam();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // Initialize
+    loadTeam();
+  </script>
+</body>
+</html>
