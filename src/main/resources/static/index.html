@@ -2507,17 +2507,16 @@ function isManagerOrAdmin() { return ['ADMIN', 'MANAGER'].includes(userRole()); 
 
 /* AUTH TABS & ACTIONS */
 function switchAuthTab(tab) {
-  if (tab === 'login') {
-    el('tabLogin').classList.add('active');
-    el('tabSignup').classList.remove('active');
-    el('loginForm').classList.remove('hidden');
-    el('signupForm').classList.add('hidden');
-  } else {
-    el('tabSignup').classList.add('active');
-    el('tabLogin').classList.remove('active');
-    el('signupForm').classList.remove('hidden');
-    el('loginForm').classList.add('hidden');
-  }
+  const isLogin = tab === 'login';
+  const loginBtn = el('tabLoginBtn') || el('tabLogin');
+  const signupBtn = el('tabSignupBtn') || el('tabSignup');
+  const loginForm = el('loginForm');
+  const signupForm = el('signupForm');
+
+  if (loginBtn) loginBtn.classList.toggle('active', isLogin);
+  if (signupBtn) signupBtn.classList.toggle('active', !isLogin);
+  if (loginForm) loginForm.classList.toggle('hidden', !isLogin);
+  if (signupForm) signupForm.classList.toggle('hidden', isLogin);
 }
 
 function autoSubdomain(val) {
